@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="emoji-lock/screenshots/preview.png" alt="Logo" width="50%" height="50%">
+  <img src="screenshots/preview.png" alt="Logo" width="50%" height="50%">
   
   # Emoji Clock
   
