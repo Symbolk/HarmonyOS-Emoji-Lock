@@ -541,18 +541,70 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
             height: '160px',
           }}
         >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: sunPosition.color,
-              opacity: sunPosition.opacity,
-              boxShadow: `
-                0 0 80px 40px ${sunPosition.glowColor}0.4),
-                0 0 120px 80px ${sunPosition.glowColor}0.2)
-              `,
-              filter: 'blur(2px)',
-            }}
-          />
+          {isNightTime(hours) ? (
+            // 月亮
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%)',
+                opacity: 0.9,
+                boxShadow: `
+                  0 0 80px 40px rgba(229,231,235,0.3),
+                  0 0 120px 80px rgba(229,231,235,0.2)
+                `,
+                filter: 'blur(2px)',
+              }}
+            >
+              {/* 月亮表面的陨石坑效果 */}
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  left: '30%',
+                  top: '20%',
+                  background: 'rgba(209,213,219,0.8)',
+                  filter: 'blur(4px)',
+                }}
+              />
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  right: '25%',
+                  top: '40%',
+                  background: 'rgba(209,213,219,0.6)',
+                  filter: 'blur(3px)',
+                }}
+              />
+              <div
+                className="absolute rounded-full"
+                style={{
+                  width: '25px',
+                  height: '25px',
+                  left: '45%',
+                  bottom: '30%',
+                  background: 'rgba(209,213,219,0.7)',
+                  filter: 'blur(3px)',
+                }}
+              />
+            </div>
+          ) : (
+            // 太阳
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: sunPosition.color,
+                opacity: sunPosition.opacity,
+                boxShadow: `
+                  0 0 80px 40px ${sunPosition.glowColor}0.4),
+                  0 0 120px 80px ${sunPosition.glowColor}0.2)
+                `,
+                filter: 'blur(2px)',
+              }}
+            />
+          )}
         </div>
       </div>
 
