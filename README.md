@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="screenshots/preview.png" alt="Logo" width="50%" height="50%">
+  <img src="screenshots/preview.gif" alt="Logo">
   
   # Emoji Clock
   
-  ### 仿HarmonyOS-Next的Emoji时钟锁屏，更加有趣。
+  ### 仿HarmonyOS-Next的Emoji时钟锁屏，可通过移动设备或方向键互动。
 </div>
 
 ## 功能特点

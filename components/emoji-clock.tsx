@@ -5,17 +5,88 @@ import { Lock } from 'lucide-react'
 
 // Define emoji data with different sizes
 const emojis = [
+  // 黄色系列 - 开心/积极表情
   { expression: '😊', color: 'bg-yellow-400', size: 80 },
-  { expression: '😘', color: 'bg-yellow-400', size: 70 },
-  { expression: '😥', color: 'bg-yellow-400', size: 75 },
-  { expression: '😯', color: 'bg-orange-400', size: 65 },
-  { expression: '🤔', color: 'bg-yellow-400', size: 60 },
-  { expression: '😴', color: 'bg-orange-400', size: 55 },
-  { expression: '😳', color: 'bg-yellow-400', size: 50 },
-  { expression: '🥺', color: 'bg-orange-400', size: 45 },
-  { expression: '😅', color: 'bg-yellow-400', size: 40 },
-  { expression: '😂', color: 'bg-orange-400', size: 60 },
+  { expression: '😄', color: 'bg-yellow-400', size: 75 },
+  { expression: '😁', color: 'bg-yellow-400', size: 70 },
+  { expression: '🥰', color: 'bg-yellow-400', size: 65 },
+  { expression: '😋', color: 'bg-yellow-400', size: 60 },
+  
+  // 橙色系列 - 俏皮/搞怪表情
+  { expression: '🤪', color: 'bg-orange-400', size: 75 },
+  { expression: '😜', color: 'bg-orange-400', size: 70 },
+  { expression: '😝', color: 'bg-orange-400', size: 65 },
+  { expression: '🤗', color: 'bg-orange-400', size: 60 },
+  
+  // 红色系列 - 爱心/害羞表情
+  { expression: '😍', color: 'bg-red-400', size: 75 },
+  { expression: '🥰', color: 'bg-red-400', size: 70 },
+  { expression: '😘', color: 'bg-red-400', size: 65 },
+  { expression: '☺️', color: 'bg-red-400', size: 60 },
+  
+  // 蓝色系列 - 冷静/睡觉表情
+  { expression: '😴', color: 'bg-blue-400', size: 75 },
+  { expression: '😪', color: 'bg-blue-400', size: 70 },
+  { expression: '🥱', color: 'bg-blue-400', size: 65 },
+  { expression: '😇', color: 'bg-blue-400', size: 60 },
+  
+  // 绿色系列 - 自然/放松表情
+  { expression: '🌱', color: 'bg-green-400', size: 75 },
+  { expression: '🍀', color: 'bg-green-400', size: 70 },
+  { expression: '🌿', color: 'bg-green-400', size: 65 },
+  { expression: '🌳', color: 'bg-green-400', size: 60 },
+  
+  // 紫色系列 - 神秘/魔法表情
+  { expression: '🔮', color: 'bg-purple-400', size: 75 },
+  { expression: '✨', color: 'bg-purple-400', size: 70 },
+  { expression: '🌟', color: 'bg-purple-400', size: 65 },
+  { expression: '⭐', color: 'bg-purple-400', size: 60 },
+  
+  // 粉色系列 - 可爱/甜美表情
+  { expression: '🎀', color: 'bg-pink-400', size: 75 },
+  { expression: '🌸', color: 'bg-pink-400', size: 70 },
+  { expression: '🌺', color: 'bg-pink-400', size: 65 },
+  { expression: '💝', color: 'bg-pink-400', size: 60 },
+  
+  // 趣味表情
+  { expression: '🦄', color: 'bg-purple-400', size: 80 }, // 独角兽
+  { expression: '🌈', color: 'bg-pink-400', size: 75 },   // 彩虹
+  { expression: '🍭', color: 'bg-orange-400', size: 70 }, // 棒棒糖
+  { expression: '🎨', color: 'bg-blue-400', size: 65 },   // 调色板
+  
+  // 动物表情
+  { expression: '🐱', color: 'bg-yellow-400', size: 75 }, // 猫咪
+  { expression: '🐶', color: 'bg-orange-400', size: 70 }, // 狗狗
+  { expression: '🐰', color: 'bg-pink-400', size: 65 },   // 兔子
+  { expression: '🦊', color: 'bg-red-400', size: 60 },    // 狐狸
 ]
+
+// 在组件外部添加这两个颜色映射函数
+const getGradientColors = (color: string): string => {
+  const colorMap: { [key: string]: string } = {
+    'bg-yellow-400': '#fbbf24',
+    'bg-orange-400': '#fb923c',
+    'bg-red-400': '#f87171',
+    'bg-blue-400': '#60a5fa',
+    'bg-green-400': '#4ade80',
+    'bg-purple-400': '#c084fc',
+    'bg-pink-400': '#f472b6',
+  }
+  return colorMap[color] || '#fbbf24'
+}
+
+const getDarkerGradientColors = (color: string): string => {
+  const colorMap: { [key: string]: string } = {
+    'bg-yellow-400': '#f59e0b',
+    'bg-orange-400': '#ea580c',
+    'bg-red-400': '#ef4444',
+    'bg-blue-400': '#3b82f6',
+    'bg-green-400': '#22c55e',
+    'bg-purple-400': '#a855f7',
+    'bg-pink-400': '#ec4899',
+  }
+  return colorMap[color] || '#f59e0b'
+}
 
 interface EmojiPosition {
   x: number;
@@ -26,6 +97,20 @@ interface EmojiPosition {
   targetSize?: number;
   growing?: boolean;
   emojiIndex: number;
+  rotation: number;
+  angularVel: number;
+  rotationDecay: number;
+  preferredDirection: number;
+  exploding?: boolean;
+  explodeProgress?: number;
+  particles?: Array<{
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    size: number;
+    opacity: number;
+  }>;
 }
 
 interface Cloud {
@@ -92,13 +177,22 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
     if (containerRef.current) {
       const containerWidth = containerRef.current.clientWidth
       const containerHeight = containerRef.current.clientHeight
-      const initialPositions = emojis.map((emoji, index) => ({
-        x: Math.random() * (containerWidth - emoji.size),
+      const selectedEmojis = Array.from({length: 8}, () => ({
+        emojiIndex: Math.floor(Math.random() * emojis.length),
+        size: 40 + Math.random() * 40
+      }))
+      
+      const initialPositions = selectedEmojis.map(({ emojiIndex, size }) => ({
+        x: Math.random() * (containerWidth - size),
         y: Math.random() * (containerHeight / 2),
         vx: 0,
         vy: 0,
-        size: emoji.size,
-        emojiIndex: index
+        size: size,
+        emojiIndex: emojiIndex,
+        rotation: Math.random() * 360,
+        angularVel: 0,
+        rotationDecay: 0.95 + Math.random() * 0.04,
+        preferredDirection: Math.random() < 0.5 ? -1 : 1
       }))
       setPositions(initialPositions)
     }
@@ -164,30 +258,13 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
   }, [])
 
   useEffect(() => {
-    const friction = 0.99
-    const restitution = 0.3
-
-    const checkCollision = (pos1: EmojiPosition, pos2: EmojiPosition) => {
-      const dx = pos2.x - pos1.x
-      const dy = pos2.y - pos1.y
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      const minDistance = (pos1.size + pos2.size) / 2
-      
-      if (distance < minDistance) {
-        const angle = Math.atan2(dy, dx)
-        const targetX = pos1.x + Math.cos(angle) * minDistance
-        const targetY = pos1.y + Math.sin(angle) * minDistance
-        
-        return {
-          x1: pos1.x,
-          y1: pos1.y,
-          x2: targetX,
-          y2: targetY,
-          overlap: minDistance - distance
-        }
-      }
-      return null
-    }
+    // 调整基础物理参数
+    const friction = 0.985
+    const restitution = 0.5
+    const rotationFactor = 0.08
+    const gravityScale = 0.3
+    const massScale = 0.015
+    const angularDecay = 0.98
 
     const animate = () => {
       setPositions(prevPositions => {
@@ -195,76 +272,146 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
         const containerWidth = containerRef.current.clientWidth
         const containerHeight = containerRef.current.clientHeight
 
-        const newPositions = prevPositions.map(pos => {
-          let { x, y, vx, vy, size, targetSize, growing, emojiIndex } = pos
+        // 处理爆炸动画
+        const newPositions = prevPositions.filter(pos => {
+          if (pos.exploding) {
+            if (pos.explodeProgress! >= 1) {
+              return false // 移除完成爆炸的表情
+            }
+            return true
+          }
+          return true
+        }).map(pos => {
+          if (pos.exploding) {
+            // 更新爆炸进度
+            const newProgress = pos.explodeProgress! + 0.1
+            
+            // 更新粒子位置
+            const newParticles = pos.particles!.map(particle => ({
+              ...particle,
+              x: particle.x + particle.vx,
+              y: particle.y + particle.vy,
+              vy: particle.vy + 0.5, // 添加重力
+              opacity: 1 - newProgress // 逐渐消失
+            }))
 
-          if (growing && size < targetSize!) {
-            size = size + (targetSize! - size) * 0.1
-            if (Math.abs(targetSize! - size) < 0.5) {
-              size = targetSize!
-              growing = false
+            return {
+              ...pos,
+              size: pos.size * (1 - newProgress), // 逐渐缩小
+              explodeProgress: newProgress,
+              particles: newParticles
+            }
+          }
+          
+          // 处理生长动画
+          if (pos.growing && pos.targetSize) {
+            pos.size = pos.size + (pos.targetSize - pos.size) * 0.1
+            if (Math.abs(pos.targetSize - pos.size) < 0.5) {
+              pos.size = pos.targetSize
+              pos.growing = false
             }
           }
 
-          vx += gravityX
-          vy += gravityY
+          // 根据大小计算质量因子
+          const massFactor = 0.5 + ((pos.size - 40) / 40) * 1.5
           
-          x += vx
-          y += vy
+          // 应用重力时考虑质量
+          pos.vx += (gravityX * gravityScale) / massFactor
+          pos.vy += (gravityY * gravityScale) / massFactor
+          
+          pos.x += pos.vx
+          pos.y += pos.vy
 
-          if (y > containerHeight - size) {
-            y = containerHeight - size
-            vy = -vy * restitution
+          // 改进的旋转计算
+          const speedFactor = Math.sqrt(pos.vx * pos.vx + pos.vy * pos.vy)
+          const targetAngularVel = pos.preferredDirection * speedFactor * rotationFactor
+          
+          // 角速度向目标值渐变
+          pos.angularVel = pos.angularVel * pos.rotationDecay + 
+                         (targetAngularVel - pos.angularVel) * (1 - pos.rotationDecay)
+          
+          // 落地后额外减速旋转
+          if (pos.y >= containerHeight - pos.size) {
+            pos.angularVel *= angularDecay
           }
 
-          if (x < 0) {
-            x = 0
-            vx = -vx * restitution
-          }
-          if (x > containerWidth - size) {
-            x = containerWidth - size
-            vx = -vx * restitution
+          pos.rotation = (pos.rotation + pos.angularVel) % 360
+
+          // 碰撞处理
+          if (pos.y > containerHeight - pos.size) {
+            pos.y = containerHeight - pos.size
+            pos.vy = -pos.vy * restitution
+            
+            const friction = pos.vx * rotationFactor / massFactor
+            pos.angularVel = pos.angularVel * 0.9 + friction * pos.preferredDirection
           }
 
-          vx *= friction
-          vy *= friction
+          if (pos.x < 0) {
+            pos.x = 0
+            pos.vx = -pos.vx * restitution
+            pos.angularVel = Math.abs(pos.angularVel) * pos.preferredDirection
+          }
+          if (pos.x > containerWidth - pos.size) {
+            pos.x = containerWidth - pos.size
+            pos.vx = -pos.vx * restitution
+            pos.angularVel = Math.abs(pos.angularVel) * pos.preferredDirection
+          }
 
-          return { x, y, vx, vy, size, targetSize, growing, emojiIndex }
+          // 应用摩擦力时考虑质量
+          pos.vx *= (friction + (1 - friction) * (1 - 1/massFactor))
+          pos.vy *= (friction + (1 - friction) * (1 - 1/massFactor))
+
+          return pos
         })
 
+        // 碰撞检测和处理
         for (let i = 0; i < newPositions.length; i++) {
           for (let j = i + 1; j < newPositions.length; j++) {
-            const collision = checkCollision(newPositions[i], newPositions[j])
+            const pos1 = newPositions[i]
+            const pos2 = newPositions[j]
             
-            if (collision) {
-              const pos1 = newPositions[i]
-              const pos2 = newPositions[j]
+            const dx = pos2.x - pos1.x
+            const dy = pos2.y - pos1.y
+            const distance = Math.sqrt(dx * dx + dy * dy)
+            const minDistance = (pos1.size + pos2.size) / 2
+            
+            if (distance < minDistance) {
+              // 计算两个球的质量因子
+              const mass1 = 0.5 + ((pos1.size - 40) / 40) * 1.5
+              const mass2 = 0.5 + ((pos2.size - 40) / 40) * 1.5
               
-              const dx = pos2.x - pos1.x
-              const dy = pos2.y - pos1.y
-              const distance = Math.sqrt(dx * dx + dy * dy)
+              const angle = Math.atan2(dy, dx)
+              const moveX = (Math.cos(angle) * (minDistance - distance)) / 2
+              const moveY = (Math.sin(angle) * (minDistance - distance)) / 2
+
+              // 计算相对速度
+              const relativeVel = Math.sqrt(
+                Math.pow(pos2.vx - pos1.vx, 2) + 
+                Math.pow(pos2.vy - pos1.vy, 2)
+              )
+
+              // 角速度变化考虑质量
+              const angularVelChange = (relativeVel * rotationFactor) / ((mass1 + mass2) / 2)
+              newPositions[i].angularVel -= angularVelChange * newPositions[i].preferredDirection
+              newPositions[j].angularVel += angularVelChange * newPositions[j].preferredDirection
+
+              // 位置调整
+              newPositions[i].x = pos1.x - moveX * (mass2 / (mass1 + mass2))
+              newPositions[i].y = pos1.y - moveY * (mass2 / (mass1 + mass2))
+              newPositions[j].x = pos2.x + moveX * (mass1 / (mass1 + mass2))
+              newPositions[j].y = pos2.y + moveY * (mass1 / (mass1 + mass2))
+              
+              // 速度调整考虑质量
               const nx = dx / distance
               const ny = dy / distance
               
-              const overlap = (pos1.size + pos2.size) / 2 - distance
-              const separationX = nx * overlap / 2
-              const separationY = ny * overlap / 2
+              const p = 2 * (pos1.vx * nx + pos1.vy * ny - pos2.vx * nx - pos2.vy * ny) 
+                        / (mass1 + mass2)
               
-              newPositions[i] = {
-                ...pos1,
-                x: pos1.x - separationX,
-                y: pos1.y - separationY,
-                vx: pos1.vx - nx * restitution,
-                vy: pos1.vy - ny * restitution
-              }
-              
-              newPositions[j] = {
-                ...pos2,
-                x: pos2.x + separationX,
-                y: pos2.y + separationY,
-                vx: pos2.vx + nx * restitution,
-                vy: pos2.vy + ny * restitution
-              }
+              newPositions[i].vx = pos1.vx - p * mass2 * nx * restitution
+              newPositions[i].vy = pos1.vy - p * mass2 * ny * restitution
+              newPositions[j].vx = pos2.vx + p * mass1 * nx * restitution
+              newPositions[j].vy = pos2.vy + p * mass1 * ny * restitution
             }
           }
         }
@@ -276,7 +423,6 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
     }
 
     animate()
-
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
@@ -448,24 +594,70 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
     const relativeY = (y / containerRect.height) * 100
 
     const isClickingEmoji = (event.target as Element).closest('.group') !== null
-
     const isInEmojiContainer = (event.target as Element).closest('.container-area') !== null
 
     if (isInEmojiContainer && !isClickingEmoji) {
-      const randomIndex = Math.floor(Math.random() * emojis.length)
-      const randomEmoji = emojis[randomIndex]
-      const size = randomEmoji.size * 0.2
+      if (positions.length >= 20) {
+        setPositions(prev => {
+          // 将第一个表情设置为爆炸状态
+          const explodingPositions = [...prev]
+          explodingPositions[0] = {
+            ...explodingPositions[0],
+            exploding: true,
+            explodeProgress: 0,
+            particles: Array.from({ length: 8 }, () => ({
+              x: explodingPositions[0].x + explodingPositions[0].size / 2,
+              y: explodingPositions[0].y + explodingPositions[0].size / 2,
+              vx: (Math.random() - 0.5) * 10,
+              vy: (Math.random() - 0.5) * 10,
+              size: explodingPositions[0].size * 0.2,
+              opacity: 1
+            }))
+          }
 
-      setPositions(prev => [...prev, {
-        x: x - size / 2,
-        y: y - size / 2,
-        vx: 0,
-        vy: 0,
-        size: size,
-        targetSize: randomEmoji.size,
-        growing: true,
-        emojiIndex: randomIndex,
-      }])
+          // 添加新表情
+          const randomIndex = Math.floor(Math.random() * emojis.length)
+          const size = 40 + Math.random() * 40
+          const maxInitialVelocity = Math.min(6, y / 16)
+          
+          return [...explodingPositions, {
+            x: x - size / 2,
+            y: y - size / 2,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: -maxInitialVelocity,
+            size: size * 0.2,
+            targetSize: size,
+            growing: true,
+            emojiIndex: randomIndex,
+            rotation: Math.random() * 360,
+            angularVel: (Math.random() - 0.5) * 8,
+            rotationDecay: 0.95 + Math.random() * 0.04,
+            preferredDirection: Math.random() < 0.5 ? -1 : 1
+          }]
+        })
+      } else {
+        const randomIndex = Math.floor(Math.random() * emojis.length)
+        const size = 40 + Math.random() * 40
+        
+        // 计算安全的初始速度
+        const maxInitialVelocity = Math.min(6, y / 16)
+        const initialVy = -maxInitialVelocity
+
+        setPositions(prev => [...prev, {
+          x: x - size / 2,
+          y: y - size / 2,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: initialVy,
+          size: size * 0.2,
+          targetSize: size,
+          growing: true,
+          emojiIndex: randomIndex,
+          rotation: Math.random() * 360,
+          angularVel: (Math.random() - 0.5) * 8,
+          rotationDecay: 0.95 + Math.random() * 0.04,
+          preferredDirection: Math.random() < 0.5 ? -1 : 1
+        }])
+      }
     } else if (!isInEmojiContainer) {
       const newCloud = generateRandomCloud()
       
@@ -657,93 +849,111 @@ export default function EmojiClock({ hours, minutes }: EmojiClockProps) {
           onClick={handleContainerClick}
         >
           {positions.map((position, index) => (
-            <div
-              key={index}
-              className="absolute cursor-pointer group"
-              style={{
-                width: `${position.size}px`,
-                height: `${position.size}px`,
-                left: position.x,
-                top: position.y,
-                transition: 'transform 0.2s ease-out',
-              }}
-              onClick={() => handleEmojiClick(index)}
-            >
+            <div key={index}>
               <div
-                className={`w-full h-full rounded-full ${emojis[position.emojiIndex].color} flex items-center justify-center overflow-hidden relative group-hover:scale-105`}
+                className="absolute cursor-pointer group"
                 style={{
-                  fontSize: `${position.size * 0.6}px`,
-                  background: `radial-gradient(circle at 30% 30%, 
-                    ${emojis[position.emojiIndex].color === 'bg-yellow-400' ? '#fbbf24' : '#fb923c'}, 
-                    ${emojis[position.emojiIndex].color === 'bg-yellow-400' ? '#f59e0b' : '#ea580c'})`,
-                  boxShadow: `
-                    inset -8px -8px 16px rgba(0, 0, 0, 0.2),
-                    inset 8px 8px 16px rgba(255, 255, 255, 0.5),
-                    8px 8px 20px rgba(0, 0, 0, 0.15),
-                    0 0 30px ${sunPosition.glowColor}${
-                      Math.max(0.1, 1 - getDistance(
-                        { x: position.x + position.size/2, y: position.y + position.size/2 }, 
-                        { x: (sunPosition.x * containerRef.current!.clientWidth / 100) || 0, 
-                          y: (sunPosition.y * containerRef.current!.clientHeight / 100) || 0 }
-                      ) / 300)
-                    })
-                  `,
-                  transition: 'all 0.3s ease-out',
+                  width: `${position.size}px`,
+                  height: `${position.size}px`,
+                  left: position.x,
+                  top: position.y,
+                  transform: `rotate(${position.rotation}deg)`,
+                  transition: 'transform 0.05s linear',
+                  opacity: position.exploding ? 1 - position.explodeProgress! : 1
                 }}
+                onClick={() => handleEmojiClick(index)}
               >
-                {emojis[position.emojiIndex].expression}
-                <div 
-                  className="absolute inset-0 rounded-full"
+                <div
+                  className={`w-full h-full rounded-full ${emojis[position.emojiIndex].color} flex items-center justify-center overflow-hidden relative group-hover:scale-105`}
                   style={{
-                    background: `
-                      radial-gradient(
-                        circle at ${mousePosition.x}% ${mousePosition.y}%, 
-                        rgba(255,255,255,0.5) 0%, 
-                        transparent 70%
-                      ),
-                      radial-gradient(
-                        circle at ${sunPosition.x}% ${sunPosition.y}%, 
-                        ${sunPosition.glowColor}0.5) 0%, 
-                        transparent 70%
-                      )
+                    fontSize: `${position.size * 0.85}px`,
+                    background: `radial-gradient(circle at 30% 30%, 
+                      ${getGradientColors(emojis[position.emojiIndex].color)}, 
+                      ${getDarkerGradientColors(emojis[position.emojiIndex].color)})`,
+                    boxShadow: `
+                      inset -8px -8px 16px rgba(0, 0, 0, 0.2),
+                      inset 8px 8px 16px rgba(255, 255, 255, 0.5),
+                      8px 8px 20px rgba(0, 0, 0, 0.15)
                     `,
-                    pointerEvents: 'none',
-                    mixBlendMode: 'soft-light',
-                    opacity: 0.8,
                   }}
-                />
-                <div 
-                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 pointer-events-none"
-                  style={{
-                    background: `
-                      radial-gradient(
-                        circle at ${mousePosition.x}% ${mousePosition.y}%, 
+                >
+                  {emojis[position.emojiIndex].expression}
+                  <div 
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{
+                      background: isNightTime(hours) 
+                        ? `radial-gradient(circle at ${sunPosition.x}% ${sunPosition.y}%, 
+                            rgba(229,231,235,0.4) 0%, 
+                            transparent 60%)`
+                        : `radial-gradient(circle at ${sunPosition.x}% ${sunPosition.y}%, 
+                            rgba(255,255,200,0.4) 0%, 
+                            transparent 60%)`,
+                      mixBlendMode: 'soft-light',
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{
+                      background: isNightTime(hours)
+                        ? `linear-gradient(
+                            ${135 + (sunPosition.x / 100) * 90}deg,
+                            rgba(255,255,255,0.2) 0%,
+                            transparent 50%
+                          )`
+                        : `linear-gradient(
+                            ${135 + (sunPosition.x / 100) * 90}deg,
+                            rgba(255,255,255,0.4) 0%,
+                            transparent 50%
+                          )`,
+                      opacity: Math.max(0.3, 1 - getDistance(
+                        { x: position.x + position.size/2, y: position.y + position.size/2 },
+                        { 
+                          x: (sunPosition.x * containerRef.current!.clientWidth / 100) || 0,
+                          y: (sunPosition.y * containerRef.current!.clientHeight / 100) || 0
+                        }
+                      ) / 300),
+                      mixBlendMode: 'overlay',
+                    }}
+                  />
+                  <div 
+                    className="absolute inset-0 rounded-full pointer-events-none"
+                    style={{
+                      background: `radial-gradient(circle at ${
+                        100 - sunPosition.x}% ${100 - sunPosition.y}%, 
                         rgba(0,0,0,0.2) 0%,
-                        transparent 50%
-                      )
-                    `,
-                    transform: 'scale(1.1)',
-                    transition: 'opacity 0.2s ease-out',
-                    mixBlendMode: 'multiply',
-                    filter: 'blur(4px)',
-                  }}
-                />
-                <div 
-                  className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 pointer-events-none"
-                  style={{
-                    background: `
-                      radial-gradient(
-                        circle at ${mousePosition.x}% ${mousePosition.y}%, 
-                        rgba(255,255,255,0.4) 0%,
-                        transparent 60%
-                      )
-                    `,
-                    transform: 'scale(0.9)',
-                    transition: 'opacity 0.2s ease-out',
-                    mixBlendMode: 'screen',
-                  }}
-                />
+                        transparent 70%
+                      )`,
+                      mixBlendMode: 'multiply',
+                      filter: 'blur(4px)',
+                      opacity: Math.max(0.2, 1 - getDistance(
+                        { x: position.x + position.size/2, y: position.y + position.size/2 },
+                        { 
+                          x: (sunPosition.x * containerRef.current!.clientWidth / 100) || 0,
+                          y: (sunPosition.y * containerRef.current!.clientHeight / 100) || 0
+                        }
+                      ) / 400),
+                    }}
+                  />
+                </div>
               </div>
+
+              {/* 爆炸粒子效果 */}
+              {position.exploding && position.particles?.map((particle, i) => (
+                <div
+                  key={`particle-${i}`}
+                  className="absolute rounded-full"
+                  style={{
+                    width: `${particle.size}px`,
+                    height: `${particle.size}px`,
+                    left: particle.x,
+                    top: particle.y,
+                    opacity: particle.opacity,
+                    background: getGradientColors(emojis[position.emojiIndex].color),
+                    transform: 'translate(-50%, -50%)',
+                    transition: 'opacity 0.1s linear'
+                  }}
+                />
+              ))}
             </div>
           ))}
         </div>
